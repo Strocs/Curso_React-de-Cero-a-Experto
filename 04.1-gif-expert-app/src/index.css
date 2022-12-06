@@ -1,0 +1,57 @@
+* {
+	color: aliceblue;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 1.2rem;
+}
+
+body {
+	background-color: #202022;
+	padding: 60px;
+}
+
+h2 {
+	font-size: 2rem;
+}
+
+h3 {
+	text-transform: capitalize;
+	font-weight: 200;
+}
+
+input {
+	width: 90%;
+	max-width: 600px;
+	color: #202022;
+	height: 30px;
+	font-size: 1rem;
+}
+
+.card-grid {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.card {
+	margin: 5px;
+	transition: transform 0.1s, box-shadow 0.1s;
+	z-index: 1;
+	max-height: 200px;
+}
+
+.card img {
+	height: 200px;
+}
+
+.card:hover {
+	transform: scale(1.2);
+	z-index: 2;
+}
+.card:hover > img {
+	box-shadow: 0px 0px 0px 2px aliceblue;
+}
+
+::placeholder {
+	font-size: 0.9rem;
+	font-weight: 100;
+	opacity: 0.5; 
+}

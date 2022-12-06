@@ -1,0 +1,30 @@
+// Vitest Snapshot v1
+
+exports[`Pruebas en <CounterApp /> > debe de hacer match con el snapshot 1`] = `
+<div>
+  <h1>
+    Counter App
+  </h1>
+  <h2>
+    10
+  </h2>
+  <div>
+    <button
+      type="button"
+    >
+      +1
+    </button>
+    <button
+      type="button"
+    >
+      -1
+    </button>
+    <button
+      aria-label="btn-reset"
+      type="button"
+    >
+      Reset
+    </button>
+  </div>
+</div>
+`;

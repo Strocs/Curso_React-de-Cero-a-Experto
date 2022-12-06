@@ -1,0 +1,24 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+h1 {
+  letter-spacing: .4rem;
+  background: linear-gradient(90deg, cyan, blueviolet);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+h2 {
+  color:lightskyblue;
+  font-size: 3rem;
+}
+button {
+  background: aliceblue;
+  color: black;
+  margin: 1rem;
+}
