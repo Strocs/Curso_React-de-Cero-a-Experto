@@ -35,15 +35,17 @@ export const Sidebar = ({ drawerWidth = 240 }) => {
         <Divider />
 
         <List>
-          {['Enero', 'Febrero', 'Marzo', 'Abril'].map(text => (
-            <ListItem key={text} disabledPadding>
+          {['Enero', 'Febrero', 'Marzo', 'Abril'].map((text) => (
+            <ListItem key={text}>
               <ListItemButton>
                 <ListItemIcon>
                   <TurnedInNot />
                 </ListItemIcon>
                 <Grid container>
                   <ListItemText primary={text} />
-                  <ListItemText secondary={'Lorem ipsum dolor sit amet consectetur.'} />
+                  <ListItemText
+                    secondary={'Lorem ipsum dolor sit amet consectetur.'}
+                  />
                 </Grid>
               </ListItemButton>
             </ListItem>
