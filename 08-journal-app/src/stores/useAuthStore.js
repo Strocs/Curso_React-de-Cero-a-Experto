@@ -1,12 +1,13 @@
 import { create } from 'zustand'
 import {
+  loginWithEmailAndPassword,
   registerUserWithEmailAndPassword,
   signInWithGoogle
 } from '../firebase/providers'
 
 export const useAuthStore = create((set, get) => ({
   userAuth: {
-    status: 'not-authenticated',
+    status: 'checking',
     uid: null,
     email: null,
     displayName: null,
@@ -46,8 +47,14 @@ export const useAuthStore = create((set, get) => ({
       }
     })),
 
-  startEmailAndPasswordSignIn: async (email, password) => {
+  startEmailAndPasswordSignIn: async (userData) => {
     get().checkingCredentials()
+
+    const resp = await loginWithEmailAndPassword(userData)
+
+    if (!resp.ok) return get().logout(resp.errorMessage)
+
+    get().login(resp)
   },
 
   startCreatingUserWithEmailAndPassword: async (userData) => {

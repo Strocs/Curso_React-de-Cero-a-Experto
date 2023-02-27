@@ -1,27 +1,33 @@
 import { useAuthStore } from '../../stores/useAuthStore'
 import { Link as RouterLink } from 'react-router-dom'
 import { Google } from '@mui/icons-material'
-import { Button, Grid, Link, TextField, Typography } from '@mui/material'
+import { Alert, Button, Grid, Link, TextField, Typography } from '@mui/material'
 import { useForm } from '../../hooks'
 import { AuthLayout } from '../layout/AuthLayout'
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 
 export const LoginPage = () => {
   const { email, password, onInputChange } = useForm({
-    email: 'strocsdev@gmail.com',
-    password: '123456'
+    email: '',
+    password: ''
   })
 
-  // const startEmailAndPasswordSignIn = useAuthStore(
-  //   (state) => state.startEmailAndPasswordSignIn
-  // )
+  const startEmailAndPasswordSignIn = useAuthStore(
+    (state) => state.startEmailAndPasswordSignIn
+  )
   const startGoogleSignIn = useAuthStore((state) => state.startGoogleSignIn)
-  const { status } = useAuthStore((state) => state.userAuth)
+  const logout = useAuthStore((state) => state.logout)
+  const { status, errorMessage } = useAuthStore((state) => state.userAuth)
 
   const isCheckingAuth = useMemo(() => status === 'checking', [status])
 
+  useEffect(() => {
+    logout(null)
+  }, [])
+
   const onSubmit = (event) => {
     event.preventDefault()
+    startEmailAndPasswordSignIn({ email, password })
   }
 
   const onGoggleSignIn = () => {
@@ -54,6 +60,9 @@ export const LoginPage = () => {
             />
           </Grid>
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+            <Grid item xs={12} display={errorMessage ? '' : 'none'}>
+              <Alert severity='error'>{errorMessage}</Alert>
+            </Grid>
             <Grid item xs={12} sm={6}>
               <Button
                 disabled={isCheckingAuth}
