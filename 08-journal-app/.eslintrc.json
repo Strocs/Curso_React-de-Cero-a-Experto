@@ -12,6 +12,7 @@
   "plugins": ["react"],
   "rules": {
     "no-unused-vars": "off",
-    "space-before-function-paren": "off"
+    "space-before-function-paren": "off",
+    "multiline-ternary": "off"
   }
 }
