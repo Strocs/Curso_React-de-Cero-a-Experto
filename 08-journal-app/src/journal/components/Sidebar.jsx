@@ -12,8 +12,10 @@ import {
   Toolbar,
   Typography
 } from '@mui/material'
+import { useAuthStore } from '../../stores/useAuthStore'
 
 export const Sidebar = ({ drawerWidth = 240 }) => {
+  const { displayName } = useAuthStore((state) => state.userAuth)
   return (
     <Box
       component='nav'
@@ -29,7 +31,7 @@ export const Sidebar = ({ drawerWidth = 240 }) => {
       >
         <Toolbar>
           <Typography variant='h6' noWrap component={'div'}>
-            Ignacio Molina
+            {displayName}
           </Typography>
         </Toolbar>
         <Divider />
