@@ -1,21 +1,12 @@
-import { TurnedInNot } from '@mui/icons-material'
-import {
-  Box,
-  Divider,
-  Drawer,
-  Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Typography
-} from '@mui/material'
+import { Box, Divider, Drawer, List, Toolbar, Typography } from '@mui/material'
+import { useJournalStore } from '../../stores'
 import { useAuthStore } from '../../stores/useAuthStore'
+import { SideBarItem } from './SideBarItem'
 
 export const Sidebar = ({ drawerWidth = 240 }) => {
   const { displayName } = useAuthStore((state) => state.userAuth)
+  const notes = useJournalStore((state) => state.notes)
+
   return (
     <Box
       component='nav'
@@ -37,20 +28,8 @@ export const Sidebar = ({ drawerWidth = 240 }) => {
         <Divider />
 
         <List>
-          {['Enero', 'Febrero', 'Marzo', 'Abril'].map((text) => (
-            <ListItem key={text}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <TurnedInNot />
-                </ListItemIcon>
-                <Grid container>
-                  <ListItemText primary={text} />
-                  <ListItemText
-                    secondary={'Lorem ipsum dolor sit amet consectetur.'}
-                  />
-                </Grid>
-              </ListItemButton>
-            </ListItem>
+          {notes.map((note) => (
+            <SideBarItem note={note} key={note.id} />
           ))}
         </List>
       </Drawer>

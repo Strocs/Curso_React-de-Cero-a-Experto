@@ -1,8 +1,11 @@
 import { SaveOutlined } from '@mui/icons-material'
 import { Button, Grid, TextField, Typography } from '@mui/material'
+import { getFormatDate } from '../../helpers'
+import { useJournalStore } from '../../stores'
 import { ImageGallery } from '../components'
 
 export const NoteView = () => {
+  const active = useJournalStore((store) => store.active)
   return (
     <Grid
       className='animate__animated animate__fadeIn animate__faster'
@@ -14,7 +17,7 @@ export const NoteView = () => {
     >
       <Grid item>
         <Typography fontSize={39} fontWeight='light'>
-          28 de agosto, 2023
+          {getFormatDate(active.date)}
         </Typography>
       </Grid>
       <Grid item>
@@ -29,7 +32,7 @@ export const NoteView = () => {
           variant='filled'
           fullWidth
           placeholder='Ingrese un título'
-          label='Título'
+          label={active.title}
           sx={{ border: 'none', mb: 1 }}
         />
         <TextField
@@ -38,6 +41,7 @@ export const NoteView = () => {
           fullWidth
           multiline
           placeholder='¿Qué sucedió el día de hoy?'
+          label={active.body}
           minRows={5}
         />
       </Grid>
