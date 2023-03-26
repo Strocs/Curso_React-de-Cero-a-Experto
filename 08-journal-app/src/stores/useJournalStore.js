@@ -66,7 +66,16 @@ export const useJournalStore = create((set, get) => ({
       messageSaved: `${title}, successfully updated`
     }))
   },
-  deleteNote: () => {},
+  deleteNote: () => {
+    const { id } = get().active
+    const { uid } = useAuthStore.getState().userAuth
+    startDeletingNote(uid, get().active)
+
+    set((state) => ({
+      notes: state.notes.filter((note) => note.id !== id),
+      active: null
+    }))
+  },
   clearNotesLogout: () => {
     set({
       isSaving: false,

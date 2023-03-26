@@ -51,3 +51,9 @@ export const startUploadingFiles = async (files = []) => {
   const photosUrl = await Promise.all(filesUploadPromises)
   return photosUrl
 }
+
+export const startDeletingNote = async (uid = '', activeNote) => {
+  if (!uid) throw new Error('You must be logged in')
+  const docRef = doc(FirebaseDB, `${uid}/journal/notes/${activeNote.id}`)
+  await deleteDoc(docRef)
+}
