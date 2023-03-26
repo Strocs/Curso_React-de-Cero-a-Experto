@@ -9,12 +9,14 @@ export const useJournalStore = create((set, get) => ({
   active: null,
   setSaving: () => {
     set({
-      isSaving: true
+      isSaving: true,
+      messageSaved: ''
     })
   },
   setActiveNote: (activeNote) => {
     set({
-      active: activeNote
+      active: activeNote,
+      messageSaved: ''
     })
   },
   addNewEmptyNote: async () => {
@@ -55,7 +57,8 @@ export const useJournalStore = create((set, get) => ({
       notes: state.notes
         .map((note) => {
           return note.id === id ? { ...note, title, body } : note
-        })
+        }),
+      messageSaved: `${title}, successfully updated`
     }))
   },
   deleteNoteById: () => {}
