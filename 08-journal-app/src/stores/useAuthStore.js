@@ -16,7 +16,7 @@ export const useAuthStore = create((set, get) => ({
   },
 
   login: ({ uid, email, displayName, photoURL }) =>
-    set(() => ({
+    set({
       userAuth: {
         status: 'authenticated',
         uid,
@@ -25,10 +25,10 @@ export const useAuthStore = create((set, get) => ({
         photoURL,
         errorMessage: null
       }
-    })),
+    }),
 
   logout: (errorMessage) =>
-    set(() => ({
+    set({
       userAuth: {
         status: 'not-authenticated',
         uid: null,
@@ -37,7 +37,7 @@ export const useAuthStore = create((set, get) => ({
         photoURL: null,
         errorMessage
       }
-    })),
+    }),
 
   checkingCredentials: () =>
     set((state) => ({

@@ -6,11 +6,13 @@ import { useForm } from '../../hooks'
 import { AuthLayout } from '../layout/AuthLayout'
 import { useMemo, useEffect } from 'react'
 
+const formDate = {
+  email: '',
+  password: ''
+}
+
 export const LoginPage = () => {
-  const { email, password, onInputChange } = useForm({
-    email: '',
-    password: ''
-  })
+  const { email, password, onInputChange } = useForm(formDate)
 
   const startEmailAndPasswordSignIn = useAuthStore(
     (state) => state.startEmailAndPasswordSignIn
