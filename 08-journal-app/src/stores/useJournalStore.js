@@ -1,6 +1,12 @@
 import { create } from 'zustand'
 import { useAuthStore } from './'
-import { loadNotes, createNote, saveNote } from '../helpers'
+import {
+  startCreateNote,
+  startDeletingNote,
+  startLoadNotes,
+  startSaveNote,
+  startUploadingFiles
+} from '../helpers'
 
 export const useJournalStore = create((set, get) => ({
   isSaving: false,
@@ -28,7 +34,7 @@ export const useJournalStore = create((set, get) => ({
       date: new Date().getTime(),
       imageUrls: []
     }
-    const note = await createNote(uid, noteTemplate)
+    const note = await startCreateNote(uid, noteTemplate)
 
     // Adding note to state
     set((state) => ({
@@ -39,27 +45,49 @@ export const useJournalStore = create((set, get) => ({
   },
   setNotes: async () => {
     const { uid } = useAuthStore.getState().userAuth
-    const notesFromDB = await loadNotes(uid)
+    const notesFromDB = await startLoadNotes(uid)
     set({
       notes: notesFromDB
     })
   },
-  saveSaving: async () => {
+  saveNote: async () => {
     get().setSaving()
     const { uid } = useAuthStore.getState().userAuth
-    await saveNote(uid, get().active)
-    get().updateNotes()
+    await startSaveNote(uid, get().active)
+    get().updateNote()
   },
-  updateNotes: () => {
+  updateNote: () => {
     const { id, title, body } = get().active
     set((state) => ({
       isSaving: false,
-      notes: state.notes
-        .map((note) => {
-          return note.id === id ? { ...note, title, body } : note
-        }),
+      notes: state.notes.map((note) => {
+        return note.id === id ? { ...note, title, body } : note
+      }),
       messageSaved: `${title}, successfully updated`
     }))
   },
-  deleteNoteById: () => {}
+  deleteNote: () => {},
+  clearNotesLogout: () => {
+    set({
+      isSaving: false,
+      messageSaved: '',
+      notes: [],
+      active: null
+    })
+  },
+  uploadFiles: async (files) => {
+    get().setSaving()
+    const photosUrls = await startUploadingFiles(files)
+    get().setPhotosToActiveNote(photosUrls)
+    console.log(get().active)
+  },
+  setPhotosToActiveNote: (imageUrls) => {
+    set((state) => ({
+      active: {
+        ...state.active,
+        imageUrls: [...state.active.imageUrls, ...imageUrls]
+      },
+      isSaving: false
+    }))
+  }
 }))

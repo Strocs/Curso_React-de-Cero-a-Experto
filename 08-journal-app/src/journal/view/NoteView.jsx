@@ -1,6 +1,10 @@
-import { SaveOutlined } from '@mui/icons-material'
-import { Button, Grid, TextField, Typography } from '@mui/material'
-import { useEffect, useMemo } from 'react'
+import {
+  DeleteOutline,
+  SaveOutlined,
+  UploadOutlined
+} from '@mui/icons-material'
+import { Button, Grid, IconButton, TextField, Typography } from '@mui/material'
+import { useEffect, useMemo, useRef } from 'react'
 import { useForm } from '../../hooks/useForm'
 import { useJournalStore } from '../../stores'
 import { ImageGallery } from '../components'
@@ -12,7 +16,10 @@ export const NoteView = () => {
   const messageSaved = useJournalStore((store) => store.messageSaved)
   const isSaving = useJournalStore((store) => store.isSaving)
   const setActiveNote = useJournalStore((store) => store.setActiveNote)
-  const saveSaving = useJournalStore((store) => store.saveSaving)
+  const saveNote = useJournalStore((store) => store.saveNote)
+  const uploadFiles = useJournalStore((store) => store.uploadFiles)
+  const deleteNote = useJournalStore((store) => store.deleteNote)
+
   const { body, title, date, onInputChange, formState } = useForm(active)
 
   const newDate = useMemo(() => {
@@ -20,6 +27,8 @@ export const NoteView = () => {
     const newDate = new Date(date)
     return newDate.toLocaleDateString('es-ES', options)
   }, [date])
+
+  const fileInputRef = useRef(null)
 
   useEffect(() => {
     setActiveNote(formState)
@@ -32,7 +41,16 @@ export const NoteView = () => {
   }, [messageSaved])
 
   const onSaveNote = () => {
-    saveSaving()
+    saveNote()
+  }
+
+  const onFileInputChange = ({ target }) => {
+    if (target.files === 0) return
+    uploadFiles(target.files)
+  }
+
+  const onDelete = () => {
+    deleteNote()
   }
 
   return (
@@ -50,6 +68,20 @@ export const NoteView = () => {
         </Typography>
       </Grid>
       <Grid item>
+        <input
+          ref={fileInputRef}
+          type='file'
+          multiple
+          onChange={onFileInputChange}
+          style={{ display: 'none' }}
+        />
+        <IconButton
+          color='primary'
+          disabled={isSaving}
+          onClick={() => fileInputRef.current.click()}
+        >
+          <UploadOutlined />
+        </IconButton>
         <Button
           disabled={isSaving}
           onClick={onSaveNote}
@@ -84,7 +116,14 @@ export const NoteView = () => {
           onChange={onInputChange}
         />
       </Grid>
-      <ImageGallery />
+
+      <Grid container justifyContent='end'>
+        <Button onClick={onDelete} sx={{ mt: 2 }} color='error'>
+          <DeleteOutline />
+          Borrar
+        </Button>
+      </Grid>
+      <ImageGallery images={active.imageUrls} />
     </Grid>
   )
 }

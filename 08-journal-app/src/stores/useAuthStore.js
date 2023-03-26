@@ -4,6 +4,7 @@ import {
   registerUserWithEmailAndPassword,
   signInWithGoogle
 } from '../firebase/providers'
+import { useJournalStore } from './useJournalStore'
 
 export const useAuthStore = create((set, get) => ({
   userAuth: {
@@ -27,7 +28,7 @@ export const useAuthStore = create((set, get) => ({
       }
     }),
 
-  logout: (errorMessage) =>
+  logout: (errorMessage) => {
     set({
       userAuth: {
         status: 'not-authenticated',
@@ -37,7 +38,9 @@ export const useAuthStore = create((set, get) => ({
         photoURL: null,
         errorMessage
       }
-    }),
+    })
+    useJournalStore.getState().clearNotesLogout()
+  },
 
   checkingCredentials: () =>
     set((state) => ({
