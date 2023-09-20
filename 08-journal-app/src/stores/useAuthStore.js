@@ -1,12 +1,14 @@
 import { create } from 'zustand'
 import {
+  loginWithEmailAndPassword,
   registerUserWithEmailAndPassword,
   signInWithGoogle
 } from '../firebase/providers'
+import { useJournalStore } from './useJournalStore'
 
 export const useAuthStore = create((set, get) => ({
   userAuth: {
-    status: 'not-authenticated',
+    status: 'checking',
     uid: null,
     email: null,
     displayName: null,
@@ -15,7 +17,7 @@ export const useAuthStore = create((set, get) => ({
   },
 
   login: ({ uid, email, displayName, photoURL }) =>
-    set(() => ({
+    set({
       userAuth: {
         status: 'authenticated',
         uid,
@@ -24,10 +26,10 @@ export const useAuthStore = create((set, get) => ({
         photoURL,
         errorMessage: null
       }
-    })),
+    }),
 
-  logout: (errorMessage) =>
-    set(() => ({
+  logout: (errorMessage) => {
+    set({
       userAuth: {
         status: 'not-authenticated',
         uid: null,
@@ -36,7 +38,9 @@ export const useAuthStore = create((set, get) => ({
         photoURL: null,
         errorMessage
       }
-    })),
+    })
+    useJournalStore.getState().clearNotesLogout()
+  },
 
   checkingCredentials: () =>
     set((state) => ({
@@ -46,8 +50,14 @@ export const useAuthStore = create((set, get) => ({
       }
     })),
 
-  startEmailAndPasswordSignIn: async (email, password) => {
+  startEmailAndPasswordSignIn: async (userData) => {
     get().checkingCredentials()
+
+    const resp = await loginWithEmailAndPassword(userData)
+
+    if (!resp.ok) return get().logout(resp.errorMessage)
+
+    get().login(resp)
   },
 
   startCreatingUserWithEmailAndPassword: async (userData) => {
