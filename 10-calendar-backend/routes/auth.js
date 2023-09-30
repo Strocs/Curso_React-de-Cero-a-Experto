@@ -5,19 +5,16 @@
 */
 
 const { Router } = require('express')
-const { check } = require('express-validator')
 const { createUser, loginUser, renewToken } = require('../controllers/auth')
-const { fieldValidator } = require('../middlewares/fieldValidator')
+const {
+  fieldValidator,
+  nameValidator,
+  emailValidator,
+  passwordValidator
+} = require('../middlewares/fieldValidator')
 const { validateJWT } = require('../middlewares/validate-jwt')
 
 const router = Router()
-
-const nameValidator = check('name', 'Name is required').not().isEmpty()
-const emailValidator = check('email', 'Email is required').isEmail()
-const passwordValidator = check(
-  'password',
-  'Password must be at least 6 characters'
-).isLength({ min: 6 })
 
 router.post(
   '/new',
