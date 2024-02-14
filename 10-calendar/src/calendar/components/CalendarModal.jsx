@@ -3,7 +3,7 @@ import Modal from 'react-modal'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import Swal from 'sweetalert2'
 import es from 'date-fns/locale/es'
-import { differenceInSeconds } from 'date-fns/esm'
+import { differenceInSeconds } from 'date-fns/differenceInSeconds'
 import { useCalendarStore, useUiStore } from '../../hooks'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -88,7 +88,8 @@ export const CalendarModal = () => {
       style={customStyles}
       className='modal'
       overlayClassName='modal-fondo'
-      closeTimeoutMS={200}>
+      closeTimeoutMS={200}
+    >
       <h1> Nuevo evento </h1>
       <hr />
       <form className='container' onSubmit={onSubmit}>
@@ -144,7 +145,8 @@ export const CalendarModal = () => {
             rows='5'
             name='notes'
             value={formValues.notes}
-            onChange={onInputChange}></textarea>
+            onChange={onInputChange}
+          ></textarea>
           <small id='emailHelp' className='form-text text-muted'>
             Información adicional
           </small>
