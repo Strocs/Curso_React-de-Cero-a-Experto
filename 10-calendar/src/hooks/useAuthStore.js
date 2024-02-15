@@ -4,8 +4,9 @@ import {
   clearErrorMessage,
   onChecking,
   onLogin,
-  onLogout
-} from '../store/auth/authSlice'
+  onLogout,
+  onLogoutCalendar
+} from '../store'
 
 // Alternativa a la utilización de thunks para manejar eventos asíncronos
 
@@ -45,7 +46,7 @@ export const useAuthStore = () => {
       localStorage.setItem('token-init-date', new Date().getTime())
       dispatch(onLogin({ name: data.name, uid: data.uid }))
     } catch (error) {
-      dispatch(onLogout(error.response.data?.msg || 'User already exist.'))
+      dispatch(onLogout(error.response.data?.message || 'User already exist.'))
       setTimeout(() => {
         dispatch(clearErrorMessage())
       }, 10)
@@ -71,6 +72,7 @@ export const useAuthStore = () => {
 
   const startLogout = () => {
     localStorage.clear()
+    dispatch(onLogoutCalendar())
     dispatch(onLogout())
   }
 

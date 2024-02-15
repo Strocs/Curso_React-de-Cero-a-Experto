@@ -37,7 +37,7 @@ const createUser = async (req = request, res = response) => {
     // return response with data
     res.status(201).json({
       ok: true,
-      uuid: user?.id,
+      uid: user?.id,
       name: user?.name,
       token
     })
@@ -77,7 +77,7 @@ const loginUser = async (req, res = response) => {
 
     res.status(201).json({
       ok: true,
-      uuid: user?.id,
+      uid: user?.id,
       name: user?.name,
       token
     })
